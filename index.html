@@ -1,1 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuvika · Postulación para tutores</title>
+<meta name="description" content="Postúlate como tutor de Nuvika: Minecraft, Roblox Studio, Unity, Python y Code.org. Vacantes en inglés y español.">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#15134a; --ink:#2b2a5c; --muted:#6b6a8f;
+    --purple:#7b3ff2; --blue:#2f8bff; --grad:linear-gradient(135deg,#7b3ff2 0%,#2f8bff 100%);
+    --bg:#f6f5fc; --card:#ffffff; --line:#e4e2f3; --ok:#14a06b; --err:#d93a5b;
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Outfit",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  a{color:var(--purple)}
+  .topbar{display:flex;justify-content:space-between;align-items:center;max-width:960px;margin:0 auto;padding:18px 20px}
+  .topbar img{height:44px;mix-blend-mode:multiply}
+  .lang{display:flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px}
+  .lang button{border:0;background:transparent;font:inherit;font-weight:600;color:var(--muted);padding:6px 14px;border-radius:999px;cursor:pointer}
+  .lang button.active{background:var(--grad);color:#fff}
 
+  .hero{max-width:960px;margin:0 auto;padding:28px 20px 12px;text-align:center}
+  .hero h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.1;margin:0 0 14px;color:var(--navy);font-weight:800}
+  .hero h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{max-width:620px;margin:0 auto;color:var(--muted);font-size:1.12rem}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:22px 0 6px}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:600;font-size:.95rem;color:var(--navy)}
+  .badge{display:inline-flex;gap:8px;align-items:center;margin-top:16px;background:#efe8ff;color:#5a26c9;border-radius:999px;padding:8px 16px;font-weight:600;font-size:.95rem}
+
+  main{max-width:760px;margin:24px auto 60px;padding:0 20px}
+  form,.thanks{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:0 20px 50px -30px rgba(43,42,92,.35)}
+  fieldset{border:0;margin:0 0 28px;padding:0}
+  legend{font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  legend .n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:9px;background:var(--grad);color:#fff;font-size:.9rem}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .full{grid-column:1/-1}
+  label.f{display:block;font-weight:600;font-size:.95rem;margin-bottom:6px}
+  .req::after{content:" *";color:var(--err)}
+  .hint{font-size:.85rem;color:var(--muted);margin-top:4px}
+  input[type=text],input[type=email],input[type=tel],input[type=number],input[type=url],select,textarea{
+    width:100%;font:inherit;color:var(--ink);padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fcfcff;transition:border-color .15s,box-shadow .15s}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 4px rgba(123,63,242,.12)}
+  textarea{min-height:110px;resize:vertical}
+  .options{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+  .opt{position:relative}
+  .opt input{position:absolute;opacity:0;inset:0;cursor:pointer}
+  .opt>span{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;font-weight:600;background:#fcfcff;transition:.15s;height:100%}
+  .opt>span::before{content:"";width:18px;height:18px;flex:none;border:2px solid #c9c6e4;border-radius:6px;background:#fff}
+  .opt input[type=radio]+span::before{border-radius:50%}
+  .opt input:checked+span{border-color:var(--purple);background:#f3edff;color:#4b1fb0}
+  .opt input:checked+span::before{background:var(--grad);border-color:transparent;box-shadow:inset 0 0 0 3px #fff}
+  .opt input:focus-visible+span{box-shadow:0 0 0 4px rgba(123,63,242,.18)}
+  .opt small{display:block;font-weight:500;color:var(--muted);font-size:.8rem}
+  .star{color:var(--purple)}
+  .file{border:1.5px dashed #c9c6e4;border-radius:12px;padding:14px;background:#fcfcff}
+  .consent{display:flex;gap:10px;align-items:flex-start;font-size:.92rem;color:var(--muted)}
+  .consent input{margin-top:4px;width:18px;height:18px;accent-color:var(--purple)}
+  .hp{position:absolute;left:-9999px}
+  .error{color:var(--err);font-size:.85rem;margin-top:6px;display:none}
+  .show{display:block}
+  button.submit{width:100%;border:0;border-radius:14px;padding:16px;font:inherit;font-size:1.1rem;font-weight:700;color:#fff;background:var(--grad);cursor:pointer;box-shadow:0 12px 30px -12px rgba(123,63,242,.7);transition:transform .1s,opacity .2s}
+  button.submit:hover{transform:translateY(-1px)}
+  button.submit:disabled{opacity:.6;cursor:wait;transform:none}
+  .alert{border-radius:12px;padding:12px 14px;margin-bottom:16px;display:none;font-weight:500}
+  .alert.err{background:#fdecef;color:#a3203d;display:block}
+  .thanks{display:none;text-align:center;padding:48px 32px}
+  .thanks .ic{width:72px;height:72px;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;background:var(--grad);color:#fff;font-size:2rem}
+  .thanks h2{color:var(--navy);margin:0 0 8px}
+  footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 20px 40px}
+  @media (max-width:640px){.grid{grid-template-columns:1fr}form,.thanks{padding:22px;border-radius:18px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <img src="assets/logo.png" alt="Nuvika">
+  <div class="lang" role="group" aria-label="Idioma / Language">
+    <button type="button" data-lang="es" class="active">ES</button>
+    <button type="button" data-lang="en">EN</button>
+  </div>
+</div>
+
+<section class="hero">
+  <h1 data-i18n="title">Enseña el futuro como <span>tutor de Nuvika</span></h1>
+  <p data-i18n="subtitle">Buscamos tutores apasionados por la tecnología y la educación para acompañar a niños y jóvenes mientras aprenden a crear con código.</p>
+  <div class="chips">
+    <span class="chip">Minecraft Education</span>
+    <span class="chip">Roblox Studio</span>
+    <span class="chip">Unity</span>
+    <span class="chip">Python</span>
+    <span class="chip">Code.org</span>
+  </div>
+  <div class="badge">✦ <span data-i18n="badge">Vacantes en inglés y español · El dominio del inglés es un gran plus</span></div>
+</section>
+
+<main>
+  <form id="applyForm" novalidate>
+    <div id="formAlert" class="alert" role="alert"></div>
+    <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <fieldset>
+      <legend><span class="n">1</span><span data-i18n="s1">Datos personales</span></legend>
+      <div class="grid">
+        <div class="full">
+          <label class="f req" for="nombre" data-i18n="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre" required autocomplete="name">
+        </div>
+        <div>
+          <label class="f req" for="email" data-i18n="email">Correo electrónico</label>
+          <input type="email" id="email" name="email" required autocomplete="email">
+        </div>
+        <div>
+          <label class="f req" for="telefono" data-i18n="telefono">Teléfono / WhatsApp</label>
+          <input type="tel" id="telefono" name="telefono" required autocomplete="tel" placeholder="+57 300 000 0000">
+        </div>
+        <div>
+          <label class="f req" for="pais" data-i18n="pais">País</label>
+          <input type="text" id="pais" name="pais" required autocomplete="country-name">
+        </div>
+        <div>
+          <label class="f req" for="ciudad" data-i18n="ciudad">Ciudad</label>
+          <input type="text" id="ciudad" name="ciudad" required autocomplete="address-level2">
+        </div>
+        <div>
+          <label class="f req" for="edad" data-i18n="edad">Edad</label>
+          <input type="number" id="edad" name="edad" min="18" max="99" required>
+          <div class="hint" data-i18n="edadHint">Debes ser mayor de 18 años.</div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="n">2</span><span data-i18n="s2">Idioma de la vacante</span></legend>
+      <label class="f req" data-i18n="idiomaVac">¿En qué idioma quieres enseñar?</label>
+      <div class="options" id="idiomaGroup">
+        <label class="opt"><input type="radio" name="idioma_vacante" value="Español" required><span data-i18n="optEs">Español</span></label>
+        <label class="opt"><input type="radio" name="idioma_vacante" value="Inglés"><span><span data-i18n="optEn">Inglés</span> <b class="star">★</b></span></label>
+        <label class="opt"><input type="radio" name="idioma_vacante" value="Ambos"><span><span data-i18n="optBoth">Ambos</span> <b class="star">★</b></span></label>
+      </div>
+      <div class="error" data-err="idioma_vacante" data-i18n="errChoose">Selecciona una opción.</div>
+
+      <div style="margin-top:16px">
+        <label class="f req" for="nivel_ingles" data-i18n="nivelIngles">Nivel de inglés</label>
+        <select id="nivel_ingles" name="nivel_ingles" required>
+          <option value="" data-i18n="select">Selecciona…</option>
+          <option value="Nativo" data-i18n="native">Nativo / Bilingüe</option>
+          <option value="C2">C2 – Proficiency</option>
+          <option value="C1">C1 – Advanced</option>
+          <option value="B2">B2 – Upper intermediate</option>
+          <option value="B1">B1 – Intermediate</option>
+          <option value="A2">A2 – Elementary</option>
+          <option value="A1">A1 – Beginner</option>
+          <option value="Ninguno" data-i18n="none">No hablo inglés</option>
+        </select>
+        <div class="hint" data-i18n="enHint">Para vacantes en inglés buscamos nivel B2 o superior.</div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="n">3</span><span data-i18n="s3">Programas</span></legend>
+      <label class="f req" data-i18n="programasLbl">¿Qué programas puedes enseñar? (puedes elegir varios)</label>
+      <div class="options">
+        <label class="opt"><input type="checkbox" name="programas" value="Minecraft Education"><span>Minecraft Education</span></label>
+        <label class="opt"><input type="checkbox" name="programas" value="Roblox Studio"><span>Roblox Studio</span></label>
+        <label class="opt"><input type="checkbox" name="programas" value="Unity"><span>Unity</span></label>
+        <label class="opt"><input type="checkbox" name="programas" value="Python"><span>Python</span></label>
+        <label class="opt"><input type="checkbox" name="programas" value="Code.org"><span>Code.org</span></label>
+      </div>
+      <div class="error" data-err="programas" data-i18n="errProgram">Elige al menos un programa.</div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="n">4</span><span data-i18n="s4">Experiencia y disponibilidad</span></legend>
+      <div class="grid">
+        <div>
+          <label class="f req" for="experiencia_anios" data-i18n="expLbl">Experiencia enseñando</label>
+          <select id="experiencia_anios" name="experiencia_anios" required>
+            <option value="" data-i18n="select">Selecciona…</option>
+            <option value="Ninguna" data-i18n="exp0">Sin experiencia</option>
+            <option value="Menos de 1 año" data-i18n="exp1">Menos de 1 año</option>
+            <option value="1-2 años" data-i18n="exp2">1 a 2 años</option>
+            <option value="3-5 años" data-i18n="exp3">3 a 5 años</option>
+            <option value="Más de 5 años" data-i18n="exp4">Más de 5 años</option>
+          </select>
+        </div>
+        <div>
+          <label class="f req" for="horas_semana" data-i18n="horasLbl">Horas disponibles por semana</label>
+          <input type="number" id="horas_semana" name="horas_semana" min="1" max="60" required>
+        </div>
+        <div class="full">
+          <label class="f req" data-i18n="ninosLbl">¿Has trabajado con niños o adolescentes?</label>
+          <div class="options">
+            <label class="opt"><input type="radio" name="experiencia_ninos" value="Sí" required><span data-i18n="yes">Sí</span></label>
+            <label class="opt"><input type="radio" name="experiencia_ninos" value="No"><span>No</span></label>
+          </div>
+          <div class="error" data-err="experiencia_ninos" data-i18n="errChoose">Selecciona una opción.</div>
+        </div>
+        <div class="full">
+          <label class="f req" data-i18n="dispLbl">Disponibilidad horaria</label>
+          <div class="options">
+            <label class="opt"><input type="checkbox" name="disponibilidad" value="Mañana"><span data-i18n="morning">Mañana</span></label>
+            <label class="opt"><input type="checkbox" name="disponibilidad" value="Tarde"><span data-i18n="afternoon">Tarde</span></label>
+            <label class="opt"><input type="checkbox" name="disponibilidad" value="Noche"><span data-i18n="evening">Noche</span></label>
+            <label class="opt"><input type="checkbox" name="disponibilidad" value="Fines de semana"><span data-i18n="weekend">Fines de semana</span></label>
+          </div>
+          <div class="error" data-err="disponibilidad" data-i18n="errAvail">Elige al menos una franja.</div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="n">5</span><span data-i18n="s5">Perfil</span></legend>
+      <div class="grid">
+        <div class="full">
+          <label class="f" for="linkedin" data-i18n="linkedinLbl">LinkedIn o portafolio (opcional)</label>
+          <input type="url" id="linkedin" name="linkedin" placeholder="https://">
+        </div>
+        <div class="full">
+          <label class="f" for="cv" data-i18n="cvLbl">Hoja de vida en PDF (opcional, máx. 5 MB)</label>
+          <div class="file"><input type="file" id="cv" name="cv" accept="application/pdf"></div>
+          <div class="error" data-err="cv" data-i18n="errCv">El archivo debe ser PDF y pesar máximo 5 MB.</div>
+        </div>
+        <div class="full">
+          <label class="f req" for="motivacion" data-i18n="motLbl">¿Por qué quieres ser tutor de Nuvika?</label>
+          <textarea id="motivacion" name="motivacion" required maxlength="1500"></textarea>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <label class="consent">
+        <input type="checkbox" name="acepta" id="acepta" required>
+        <span data-i18n="consent">Autorizo a Nuvika a tratar mis datos personales con el fin de evaluar mi postulación, conforme a su política de tratamiento de datos.</span>
+      </label>
+      <div class="error" data-err="acepta" data-i18n="errConsent">Debes aceptar para continuar.</div>
+    </fieldset>
+
+    <button type="submit" class="submit" id="submitBtn" data-i18n="submit">Enviar postulación</button>
+  </form>
+
+  <div class="thanks" id="thanks">
+    <div class="ic">✓</div>
+    <h2 data-i18n="thanksTitle">¡Gracias por postularte!</h2>
+    <p data-i18n="thanksText">Recibimos tu información. Nuestro equipo de talento la revisará y te contactará si tu perfil avanza en el proceso.</p>
+  </div>
+</main>
+
+<footer>© <span id="year"></span> Nuvika</footer>
+
+<script>
+/* ============================================================
+   CONFIGURACIÓN: pega aquí la URL de tu Web App de Apps Script
+   (termina en /exec). Ver README.md, paso 4.
+   ============================================================ */
+const ENDPOINT = 'PEGA_AQUI_LA_URL_DEL_WEB_APP';
+
+const MAX_CV_BYTES = 5 * 1024 * 1024;
+
+const I18N = {
+  es: {},
+  en: {
+    title: 'Teach the future as a <span>Nuvika tutor</span>',
+    subtitle: 'We are looking for tutors passionate about technology and education to guide kids and teens as they learn to create with code.',
+    badge: 'Openings in English and Spanish · English proficiency is a big plus',
+    s1: 'Personal information', nombre: 'Full name', email: 'Email', telefono: 'Phone / WhatsApp',
+    pais: 'Country', ciudad: 'City', edad: 'Age', edadHint: 'You must be at least 18 years old.',
+    s2: 'Position language', idiomaVac: 'Which language would you like to teach in?',
+    optEs: 'Spanish', optEn: 'English', optBoth: 'Both',
+    nivelIngles: 'English level', select: 'Select…', native: 'Native / Bilingual', none: "I don't speak English",
+    enHint: 'For English-language positions we look for B2 level or higher.',
+    s3: 'Programs', programasLbl: 'Which programs can you teach? (choose all that apply)',
+    s4: 'Experience and availability', expLbl: 'Teaching experience',
+    exp0: 'No experience', exp1: 'Less than 1 year', exp2: '1 to 2 years', exp3: '3 to 5 years', exp4: 'More than 5 years',
+    horasLbl: 'Available hours per week', ninosLbl: 'Have you worked with children or teenagers?', yes: 'Yes',
+    dispLbl: 'Availability', morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening', weekend: 'Weekends',
+    s5: 'Profile', linkedinLbl: 'LinkedIn or portfolio (optional)', cvLbl: 'Resume in PDF (optional, max 5 MB)',
+    motLbl: 'Why do you want to be a Nuvika tutor?',
+    consent: 'I authorize Nuvika to process my personal data for the purpose of evaluating my application, in accordance with its data processing policy.',
+    submit: 'Submit application', sending: 'Sending…',
+    errChoose: 'Please choose an option.', errProgram: 'Choose at least one program.', errAvail: 'Choose at least one time slot.',
+    errCv: 'The file must be a PDF of 5 MB or less.', errConsent: 'You must accept to continue.',
+    errForm: 'Please review the highlighted fields.', errSend: 'We could not send your application. Please try again in a few minutes.',
+    errConfig: 'The form is not configured yet (missing the Apps Script URL).',
+    thanksTitle: 'Thank you for applying!',
+    thanksText: 'We received your information. Our talent team will review it and contact you if your profile moves forward.'
+  }
+};
+const ES_EXTRA = { sending: 'Enviando…', errForm: 'Revisa los campos marcados.', errSend: 'No pudimos enviar tu postulación. Intenta de nuevo en unos minutos.', errConfig: 'El formulario aún no está configurado (falta la URL de Apps Script).' };
+
+let lang = 'es';
+// Guardar textos originales en español
+document.querySelectorAll('[data-i18n]').forEach(el => { I18N.es[el.dataset.i18n] = el.innerHTML; });
+Object.assign(I18N.es, ES_EXTRA);
+const t = k => (I18N[lang][k] ?? I18N.es[k]);
+
+function setLang(l){
+  lang = l;
+  document.documentElement.lang = l;
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
+  document.querySelectorAll('.lang button').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+  try { localStorage.setItem('nuvika_lang', l); } catch(e) {}
+}
+document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+try { const saved = localStorage.getItem('nuvika_lang'); if (saved === 'en') setLang('en'); } catch(e) {}
+document.getElementById('year').textContent = new Date().getFullYear();
+
+const form = document.getElementById('applyForm');
+const alertBox = document.getElementById('formAlert');
+const btn = document.getElementById('submitBtn');
+
+function showErr(name, show){ const e = form.querySelector(`[data-err="${name}"]`); if (e) e.classList.toggle('show', show); }
+const checked = name => [...form.querySelectorAll(`input[name="${name}"]:checked`)].map(i => i.value);
+
+function validate(){
+  let ok = form.checkValidity();
+  const rules = {
+    idioma_vacante: checked('idioma_vacante').length > 0,
+    experiencia_ninos: checked('experiencia_ninos').length > 0,
+    programas: checked('programas').length > 0,
+    disponibilidad: checked('disponibilidad').length > 0,
+    acepta: form.acepta.checked
+  };
+  const f = form.cv.files[0];
+  rules.cv = !f || (f.type === 'application/pdf' && f.size <= MAX_CV_BYTES);
+  for (const [k, v] of Object.entries(rules)) { showErr(k, !v); if (!v) ok = false; }
+  if (!ok) form.reportValidity();
+  return ok;
+}
+
+const fileToBase64 = file => new Promise((res, rej) => {
+  const r = new FileReader();
+  r.onload = () => res(String(r.result).split(',')[1]);
+  r.onerror = rej;
+  r.readAsDataURL(file);
+});
+
+form.addEventListener('change', e => { if (e.target.name) showErr(e.target.name, false); });
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  alertBox.className = 'alert';
+  if (!validate()) { alertBox.textContent = t('errForm'); alertBox.className = 'alert err'; return; }
+  if (!ENDPOINT || ENDPOINT.startsWith('PEGA_AQUI')) { alertBox.textContent = t('errConfig'); alertBox.className = 'alert err'; return; }
+
+  btn.disabled = true; btn.textContent = t('sending');
+  try {
+    const payload = {
+      website: form.website.value,
+      nombre: form.nombre.value.trim(),
+      email: form.email.value.trim(),
+      telefono: form.telefono.value.trim(),
+      pais: form.pais.value.trim(),
+      ciudad: form.ciudad.value.trim(),
+      edad: form.edad.value,
+      idioma_vacante: checked('idioma_vacante')[0],
+      nivel_ingles: form.nivel_ingles.value,
+      programas: checked('programas'),
+      experiencia_anios: form.experiencia_anios.value,
+      experiencia_ninos: checked('experiencia_ninos')[0],
+      disponibilidad: checked('disponibilidad'),
+      horas_semana: form.horas_semana.value,
+      linkedin: form.linkedin.value.trim(),
+      motivacion: form.motivacion.value.trim(),
+      idioma_formulario: lang.toUpperCase()
+    };
+    const f = form.cv.files[0];
+    if (f) payload.cv = { name: f.name, type: f.type, base64: await fileToBase64(f) };
+
+    // Sin cabeceras personalizadas -> petición "simple" (sin preflight CORS)
+    const res = await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(payload) });
+    const out = await res.json();
+    if (!out.ok) throw new Error(out.error || 'error');
+
+    form.style.display = 'none';
+    document.getElementById('thanks').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    console.error(err);
+    alertBox.textContent = t('errSend'); alertBox.className = 'alert err';
+  } finally {
+    btn.disabled = false; btn.textContent = t('submit');
+  }
+});
+</script>
+</body>
+</html>
